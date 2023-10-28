@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: applicant-service
+spec:
+  selector:
+    matchLabels:
+      app: applicant-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: applicant-service
+    spec:
+      containers:
+        - name: applicant-service
+          image: ctharinda/applicant-service:latest
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: applicant-service
+spec:
+  selector:
+    app: applicant-service
+  ports:
+    - name: http
+      port: 8380
+      nodePort: 30380
+  type: NodePort

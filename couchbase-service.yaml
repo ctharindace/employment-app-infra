@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: couchbase
+spec:
+  selector:
+    matchLabels:
+      app: couchbase
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: couchbase
+    spec:
+      containers:
+        - name: couchbase
+          image: couchbase:latest
+          env:
+            - name: COUCHBASE_SERVER_VERSION
+              value: "7.0.1"
+            - name: COUCHBASE_USERNAME
+              value: admin
+            - name: COUCHBASE_PASSWORD
+              value: password
+            - name: COUCHBASE_BUCKET
+              value: application-bucket
+            - name: COUCHBASE_BUCKET_RAMSIZE
+              value: "256"
+            - name: COUCHBASE_ANALYTICS_MEMORY_QUOTA
+              value: "1024"
+            - name: COUCHBASE_FEATURES
+              value: query
+            - name: COUCHBASE_INDEX_STORAGE_SETTING
+              value: memopt
+            - name: COUCHBASE_SERVICES
+              value: data,index,query
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: couchbase
+spec:
+  selector:
+    app: couchbase
+  ports:
+    - name: http
+      port: 8091
+      nodePort: 30091
+  type: NodePort

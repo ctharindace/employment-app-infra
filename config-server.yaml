@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: config-server
+spec:
+  selector:
+    matchLabels:
+      app: config-server
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: config-server
+    spec:
+      containers:
+        - name: config-server
+          image: ctharinda/config-server:latest
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: config-server
+spec:
+  selector:
+    app: config-server
+  ports:
+    - name: http
+      port: 8888
+      nodePort: 30888
+  type: NodePort
