@@ -22,6 +22,13 @@ spec:
               value: 1s@secret
             - name: POSTGRES_USER
               value: app_user
+          volumeMounts:
+            - name: postgres-script-volume-mount
+              mountPath: /docker-entrypoint-initdb.d/
+      volumes:
+        - name: postgres-script-volume-mount
+          persistentVolumeClaim:
+            claimName: postgres-pvc
 
 ---
 apiVersion: v1
