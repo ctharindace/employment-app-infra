@@ -8,19 +8,13 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 2Gi
+      storage: 4Gi
 
 ---
-apiVersion: v1
-kind: PersistentVolume
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
 metadata:
-  name: local-postgres-storage
-spec:
-  storageClassName: postgres-persistant-class
-  capacity:
-    storage: 2Gi
-  accessModes:
-    - ReadWriteOnce
-  hostPath:
-    path: /mnt/postgres/scripts
-    type: DirectoryOrCreate
+  name: postgres-persistant-class
+provisioner: kubernetes.io/aws-ebs
+parameters:
+  type: gp2
