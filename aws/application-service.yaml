@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: application-service
+spec:
+  selector:
+    matchLabels:
+      app: application-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: application-service
+    spec:
+      containers:
+        - name: application-service
+          image: ctharinda/application-service:latest
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: application-service
+spec:
+  selector:
+    app: application-service
+  ports:
+    - name: http
+      port: 8580
+  type: ClusterIP

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: position-service
+spec:
+  selector:
+    matchLabels:
+      app: position-service
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: position-service
+    spec:
+      containers:
+        - name: position-service
+          image: ctharinda/position-service:latest
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: position-service
+spec:
+  selector:
+    app: position-service
+  ports:
+    - name: http
+      port: 8280
+  type: ClusterIP
